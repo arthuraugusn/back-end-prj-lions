@@ -3,8 +3,8 @@ const express = require('express')
 const cors = require('cors')
 
 const bodyParser = require('body-parser')
-const { getAlunos, getAlunosAno, getAlunosStatus, getAlunosAnoStatus, getAlunoMatricula } = require('./modulos/alunos')
-const { getCursos } = require('./modulos/cursos')
+const { getAlunos, getAlunosAno, getAlunosStatus, getAlunosAnoStatus, getAlunoMatricula } = require('../modulos/alunos')
+const { getCursos } = require('../modulos/cursos')
 
 const app = express()
 
@@ -17,7 +17,7 @@ app.use((request, response, next) =>{
     next()
 })
 
-app.get('/cursos', cors(), async function(request, response, next){
+app.get('/.netlify/functions/api/cursos', cors(), async function(request, response, next){
     let escolherCurso = getCursos()
     let cursosCadastradosJSON = {}
 
@@ -30,7 +30,7 @@ app.get('/cursos', cors(), async function(request, response, next){
     }
 })
 
-app.get('/alunos/:abreviacaoCurso', cors(), async function(request, response, next){
+app.get('/.netlify/functions/api/alunos/:abreviacaoCurso', cors(), async function(request, response, next){
     let sigla = request.params.abreviacaoCurso
     let buscarAlunosCursoJSON = {}
     let buscaAlunos = getAlunos(sigla)
@@ -45,7 +45,7 @@ app.get('/alunos/:abreviacaoCurso', cors(), async function(request, response, ne
     }
 })
 
-app.get('/estudantes/:siglaCurso/:statusMatricula', cors(), async function(request, response, next){
+app.get('/.netlify/functions/api/estudantes/:siglaCurso/:statusMatricula', cors(), async function(request, response, next){
     let siglaCurso = request.params.siglaCurso
     let statusAluno = request.params.statusMatricula
     let buscarAlunosStatusMatriculaJSON = {}
@@ -61,7 +61,7 @@ app.get('/estudantes/:siglaCurso/:statusMatricula', cors(), async function(reque
     }
 })
 
-app.get('/aprendizes/:anoConclusao/:abreviaturaCurso', cors(), async function(request, response, next){
+app.get('/.netlify/functions/api/aprendizes/:anoConclusao/:abreviaturaCurso', cors(), async function(request, response, next){
     let sigla = request.params.abreviaturaCurso
     let ano = request.params.anoConclusao
     let buscarAlunosAnoConclusaoJSON = {}
@@ -78,7 +78,7 @@ app.get('/aprendizes/:anoConclusao/:abreviaturaCurso', cors(), async function(re
     }
 })
 
-app.get('/academico/:sinal/:condicaoAcademica/:anoFechamento', cors(), async function(request, response, next){
+app.get('/.netlify/functions/api/academico/:sinal/:condicaoAcademica/:anoFechamento', cors(), async function(request, response, next){
     let sigla = request.params.sinal
     let anoConclusao = request.params.anoFechamento
     let statusAluno = request.params.condicaoAcademica
@@ -95,7 +95,7 @@ app.get('/academico/:sinal/:condicaoAcademica/:anoFechamento', cors(), async fun
     }
 })
 
-app.get('/discente/:numeroMatricula/:abreviaCurso', cors(), async function(request,response, next){
+app.get('/.netlify/functions/api/discente/:numeroMatricula/:abreviaCurso', cors(), async function(request,response, next){
     let siglaCurso = request.params.abreviaCurso
     let matriculaAluno = request.params.numeroMatricula
     let buscarAluno = getAlunoMatricula(matriculaAluno, siglaCurso)
@@ -111,6 +111,4 @@ app.get('/discente/:numeroMatricula/:abreviaCurso', cors(), async function(reque
     }
 })
 
-app.listen(3030, function(){
-    console.log(`Waiting`)
-})
+module.exports = app
